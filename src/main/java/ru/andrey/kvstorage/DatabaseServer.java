@@ -1,7 +1,8 @@
 package ru.andrey.kvstorage;
 
-import ru.andrey.kvstorage.console.DatabaseCommandResult;
-import ru.andrey.kvstorage.console.ExecutionEnvironment;
+import ru.andrey.kvstorage.console.*;
+import ru.andrey.kvstorage.console.Commands.*;
+import ru.andrey.kvstorage.exception.*;
 
 public class DatabaseServer {
 
@@ -16,6 +17,22 @@ public class DatabaseServer {
     }
 
     DatabaseCommandResult executeNextCommand(String commandText) {
-        throw new UnsupportedOperationException();
+        if (commandText == null) {
+            return DatabaseCommandResult.error("Database Server: incoming command text can't be null");
+        }
+
+        String[] args = commandText.split(" ");
+        String commandName = args[0];
+        DatabaseCommand databaseCommand;
+
+        try {
+            DatabaseCommands commandWrapper = DatabaseCommands.valueOf(commandName);
+            databaseCommand = commandWrapper.getCommand(env, args);
+            return databaseCommand.execute();
+        } catch (Exception e) {
+            if(e.getMessage()!=null) return DatabaseCommandResult.error("<ERROR> Something wrong with this command, more details: " + e.getMessage());
+            else return DatabaseCommandResult.error("<ERROR> Something wrong with this command, more details: " + "Unknown error");
+        }
     }
 }
+
