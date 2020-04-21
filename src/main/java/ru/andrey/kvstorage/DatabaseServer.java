@@ -30,7 +30,8 @@ public class DatabaseServer {
             databaseCommand = commandWrapper.getCommand(env, args);
             return databaseCommand.execute();
         } catch (Exception e) {
-            return DatabaseCommandResult.error("<ERROR> Something wrong with this command, more details: " + e.getMessage());
+            if(e.getMessage()!=null) return DatabaseCommandResult.error("<ERROR> Something wrong with this command, more details: " + e.getMessage());
+            else return DatabaseCommandResult.error("<ERROR> Something wrong with this command, more details: " + "Unknown error");
         }
     }
 }

@@ -17,18 +17,18 @@ public interface DatabaseCommandResult {
     }
 
     static DatabaseCommandResult success(String newInfo) {
-        return new SomeResult(true, newInfo);
+        return new DatabaseCommandResultImpl(true, newInfo);
     }
 
     static DatabaseCommandResult error(String newInfo) {
-        return new SomeResult(false, newInfo);
+        return new DatabaseCommandResultImpl(false, newInfo);
     }
 
-    class SomeResult implements DatabaseCommandResult {
-        String info;
-        boolean isSucceeded;
+    class DatabaseCommandResultImpl implements DatabaseCommandResult {
+        private String info;
+        private boolean isSucceeded;
 
-        private SomeResult(boolean isSucceeded, String newInfo) {
+        private DatabaseCommandResultImpl(boolean isSucceeded, String newInfo) {
             this.isSucceeded = isSucceeded;
             info = newInfo;
         }
